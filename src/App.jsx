@@ -14,7 +14,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getFlights());
+    const ref = setInterval(() => {
+      dispatch(getFlights());
+    }, 5000);
+
+    return () => {
+      clearInterval(ref);
+    };
   }, []);
 
   const openModal = (id) => {

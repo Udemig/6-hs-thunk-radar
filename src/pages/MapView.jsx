@@ -8,9 +8,17 @@ import {
 
 import 'leaflet/dist/leaflet.css';
 import { useSelector } from 'react-redux';
+import icon from '../assets/plane-i.png';
+import L from 'leaflet';
 
 const MapView = ({ openModal }) => {
   const store = useSelector((store) => store);
+
+  const planeIcon = L.icon({
+    iconUrl: icon,
+    iconSize: [20, 20],
+    iconAnchor: [16, 16],
+  });
 
   return (
     <div>
@@ -26,7 +34,11 @@ const MapView = ({ openModal }) => {
 
         {/* her bir uçuş için ekrana marker basar */}
         {store.flights.map((flight) => (
-          <Marker key={flight.id} position={[flight.lat, flight.lng]}>
+          <Marker
+            icon={planeIcon}
+            key={flight.id}
+            position={[flight.lat, flight.lng]}
+          >
             <Popup>
               <div className="popup">
                 <span>Kod: {flight.code}</span>
@@ -38,13 +50,7 @@ const MapView = ({ openModal }) => {
           </Marker>
         ))}
 
-        {/* <Polyline
-          pathOptions={[
-            [51.505, -0.09],
-            [51.51, -0.1],
-            [51.51, -0.12],
-          ]}
-        /> */}
+        <Polyline positions={store.route} />
       </MapContainer>
     </div>
   );
